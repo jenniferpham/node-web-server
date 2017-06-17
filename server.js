@@ -9,6 +9,7 @@ var app = express();
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 
+//helpers are for the variables within registered partials
 hbs.registerHelper('currentYear', ()=> new Date().getFullYear());
 hbs.registerHelper('screamIt', (string) => {
     return string.toUpperCase();
@@ -39,6 +40,10 @@ app.use((request, response, next) => {
 app.use(express.static(__dirname + '/public')); //should be after response.render maintenance. File structure only matters if we don't render the maintenance
 
 app.get('/', (request, response) => {
+    response.render('home.hbs', {
+        pageTitle: 'Home Page',
+        welcomeMessage: 'Welcome to my website!'
+    });
    // response.send('<h1>hello express!</h1>');
 
     // response.send({
@@ -48,11 +53,6 @@ app.get('/', (request, response) => {
     //         'cities'
     //     ]
     // }
-
-    response.render('home.hbs', {
-        pageTitle: 'Home Page',
-        welcomeMessage: 'Welcome to my website!'
-    });
 })
 
 //**NEW ROUTE */
@@ -65,6 +65,13 @@ app.get('/about', (req, res) => {
 app.get('/bad', (req, res) => {
     res.send({
         error: 'unable to fulfill request'
+    });
+})
+
+app.get('/projects', (req, res) => {
+    res.render('projects.hbs', {
+        pageTitle: 'My Special Projects',
+        desc: 'We love doing projects and want to show them off to you.',
     });
 })
 
